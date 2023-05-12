@@ -24,7 +24,7 @@ class BaseModel:
 
     def __str__(self):
         """representation of base model"""
-        slfname = sefl.__class__.__name__
+        slfname = self.__class__.__name__
         return ("[{}] ({}) {}".format(slfname, self.id, self.__dict__))
 
     def save(self):
