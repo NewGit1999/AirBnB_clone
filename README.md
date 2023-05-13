@@ -1,3 +1,7 @@
+******DESCRIPTION OF THE PROJECT******
+this project represent the first step to build the web application, the "AirBnb clone" where we will write a command interepter to manage our AirBnB project.
+To pass this project we should use python as a programming language and the command interepter.
+*****DESCRIPTION OF THE TASKS*****
 Each task is linked and will help to:
 
 * put in place a parent class (called BaseModel) to take care of the initialization, serialization and deserialization of your future instances
