@@ -156,18 +156,18 @@ class HBNBCommand(cmd.Cmd):
             self.do_count(met)
             return None
         elif b[1].startswith('show'):
-            id_split = b[1].split('""')
+            id_split = b[1].split('"')
             bnb = met + ' ' + id_split[1]
             self.do_show(line)
             return None
         elif b[1].startswith('destroy'):
-            id_split = b[1].split('""')
+            id_split = b[1].split('"')
             line = met + ' ' + id_split[1]
             self.do_destroy(line)
             return None
         elif b[1].startswith('update'):
-            proj = b[1].split('""')
-            bnb = met + ' ' + proj[1] + ' ' + proj[3] + ' ' + proj[5]
+            proj = b[1].split('"')
+            line = met + ' ' + proj[1] + ' ' + proj[3] + ' ' + proj[5]
             self.do_update(line)
             return None
 
