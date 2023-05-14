@@ -16,7 +16,7 @@ from models import storage
 
 class HBNBCommand(cmd.Cmd):
     """Console class"""
-    prompt = '(hbnb)'
+    prompt = '(hbnb) '
     classes = [
             'BaseMdel',
             'Place',
@@ -41,49 +41,54 @@ class HBNBCommand(cmd.Cmd):
 
     def do_create(self, line):
         """creates new instance of BaseModel"""
-        if line == "" or line is None:
+        if not line:
             print("** class name missing **")
-        elif line not in storage.classes():
-            print("** class doesn't exist **")
+            return None
         else:
-            value = storage.classes()[line]()
-            value.save()
-            print(value.id)
+            line = eval(line + '()')
+            line.save()
+            print(line.id)
 
     def do_show(self, line):
         """prints string representation of instances"""
-        if line == "" or line is None:
+        b = line.split()
+        if not line:
             print("** class name missing **")
+            return None
+        elif (b[0] not in self.classes):
+            print("** class doesn't exist **")
+            return None
+        elif len(b) < 2:
+            print("** instance id missing **")
+            return None
         else:
-            data = line.split(' ')
-            if data[0] not in storage.classes():
-                print("** class doesn't exist **")
-            elif len(data) < 2:
-                print("** instance id missing **")
+            k = '{}.{}'.format(b[0], b[1])
+            if k not in storage.all().keys():
+                print("** no instance found **")
             else:
-                yas = "{}.{}".format(data[0], data[1])
-                if yas not in storage.all():
-                    print("** no instance found **")
-                else:
-                    print(storage.all()[yas])
+                a = storage.all()
+                print(a[k])
 
     def do_destroy(self, line):
         """deletes instance based on class name"""
-        if line == "" or line is None:
+        b = line.split()
+        if not line:
             print("** class name missing **")
+            return None
+        elif (b[0] not in self.classes):
+            print("** class doesn't exist **")
+            return None
+        elif len(b) < 2:
+            print("** instance id missing **")
+            return None
         else:
-            data = line.split(' ')
-            if data[0] not in storage.classes():
-                print("** class doesn't exist **")
-            elif len(data) < 2:
-                print("** instance id missing **")
+            k = '{}.{}'.format(b[0], b[1])
+            if k not in storage.all().keys():
+                print("** no instance found **")
             else:
-                yas = "{}.{}".format(data[0], data[1])
-                if yas not in storage.all():
-                    print("** no instance found **")
-                else:
-                    del storage.all()[yas]
-                    storage.save()
+                a = storage.all()
+                del a[k]
+                storage.save()
 
     def do_all(self, line):
         """prints all representations of all instances"""
