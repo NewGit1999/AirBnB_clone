@@ -4,7 +4,14 @@
 import json
 import cmd
 import re
-from models import *
+from models.base_model import BaseModel
+from models.user import User
+from models.place import Place
+from models.city import City
+from models.state import State
+from models.amenity import Amenity
+from models.review import Review
+from models import storage
 
 
 class HBNBCommand(cmd.Cmd):
@@ -32,23 +39,23 @@ class HBNBCommand(cmd.Cmd):
         """funtion shouldn't execute anything with Enter"""
         pass
 
-    def do_create(self, bnb):
+    def do_create(self, line):
         """creates new instance of BaseModel"""
-        if bnb == "" or bnb is None:
+        if line == "" or line is None:
             print("** class name missing **")
-        elif bnb not in storage.classes():
+        elif line not in storage.classes():
             print("** class doesn't exist **")
         else:
-            value = storage.classes()[bnb]()
+            value = storage.classes()[line]()
             value.save()
             print(value.id)
 
-    def do_show(self, bnb):
+    def do_show(self, line):
         """prints string representation of instances"""
-        if bnb == "" or bnb is None:
+        if line == "" or line is None:
             print("** class name missing **")
         else:
-            data = bnb.split(' ')
+            data = line.split(' ')
             if data[0] not in storage.classes():
                 print("** class doesn't exist **")
             elif len(data) < 2:
@@ -60,12 +67,12 @@ class HBNBCommand(cmd.Cmd):
                 else:
                     print(storage.all()[yas])
 
-    def do_destroy(self, bnb):
+    def do_destroy(self, line):
         """deletes instance based on class name"""
-        if bnb == "" or bnb is None:
+        if line == "" or line is None:
             print("** class name missing **")
         else:
-            data = bnb.split(' ')
+            data = line.split(' ')
             if data[0] not in storage.classes():
                 print("** class doesn't exist **")
             elif len(data) < 2:
@@ -78,9 +85,9 @@ class HBNBCommand(cmd.Cmd):
                     del storage.all()[yas]
                     storage.save()
 
-    def do_all(self, bnb):
+    def do_all(self, line):
         """prints all representations of all instances"""
-        b = bnb.split()
+        b = line.split()
         instance = []
         if len(b) == 0:
             for value in storage.all().values():
@@ -96,10 +103,10 @@ class HBNBCommand(cmd.Cmd):
                     return
             print(instance)
 
-    def do_update(self, bnb):
+    def do_update(self, line):
         """updates instances"""
-        b = bnb.split()
-        if not bnb:
+        b = line.split()
+        if not line:
             print("** class name missing **")
             return None
         elif (b[0] not in self.classes):
@@ -125,17 +132,17 @@ class HBNBCommand(cmd.Cmd):
                 storage.save()
                 return None
 
-    def do_cout(self, bnb):
+    def do_count(self, line):
         """retrieve instance"""
         ins = 0
         for k in storage.all().keys():
-            if bnb in k:
+            if line in k:
                 ins += 1
         print(ins)
 
-    def default(self, bnb):
+    def default(self, line):
         """retrieve instance based on methods"""
-        b = bnb.split('.')
+        b = line.split('.')
         met = b[0]
         if b[1] == 'all()':
             self.do_all(met)
@@ -146,17 +153,17 @@ class HBNBCommand(cmd.Cmd):
         elif b[1].startswith('show'):
             id_split = b[1].split('""')
             bnb = met + ' ' + id_split[1]
-            self.do_show(bnb)
+            self.do_show(line)
             return None
         elif b[1].startswith('destroy'):
             id_split = b[1].split('""')
-            bnb = met + ' ' + id_split[1]
-            self.do_destroy(bnb)
+            line = met + ' ' + id_split[1]
+            self.do_destroy(line)
             return None
         elif b[1].startswith('update'):
             proj = b[1].split('""')
             bnb = met + ' ' + proj[1] + ' ' + proj[3] + ' ' + proj[5]
-            self.do_update(bnb)
+            self.do_update(line)
             return None
 
 
