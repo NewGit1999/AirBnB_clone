@@ -1,5 +1,5 @@
 In this part we'll work on the web pages design with these notions:
-* What is HTML
+* What is HTML?
 * How to create an HTML page
 * What is a markup language
 * What is the DOM
